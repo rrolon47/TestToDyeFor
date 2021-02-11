@@ -3,18 +3,21 @@
 *@
 @{
 }
+@using TestToDyeFor.ViewModels;
+@model CalculateMXRecipeViewModel;
+
 
 <h1>Add Recipe</h1>
 
-<form method="post">
+<form method="post" asp-controller="Recipe" asp-action="Calculator">
     <div class="form-group">
-        <label>
+        <label asp-for="Name">
             Recipe Name
-            <input type="text" name="name" class="form-control">
+            <input asp-for="Name">
         </label>
-        <label>
+        <label asp-for="DyeColor">
             Dye Color
-            <input type="text" name="dyeColor" class="form-control">
+            <input asp-for="DyeColor">
         </label>
     </div>
     <input type="submit" value="Calculate Recipe" />

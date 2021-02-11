@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TestToDyeFor.Data;
 using TestToDyeFor.Models;
+using TestToDyeFor.ViewModels;
 
 namespace TestToDyeFor.Controllers
 {
@@ -16,24 +17,36 @@ namespace TestToDyeFor.Controllers
         //get: Recipe
         public IActionResult Index()
         {
-            ViewBag.mxrecipes = RecipeData.GetAll();
+           List<MXRecipe> mxRecipes = new List<MXRecipe>(RecipeData.GetAll());
 
-            return View();
+            return View(mxRecipes);
         }
 
+        //retrieves form
+        [HttpGet]
+        [Route("Recipe/Calculator")]
         public IActionResult Calculator()
         {
-            return View();
+            CalculateMXRecipeViewModel calculateMXRecipeViewModel = new CalculateMXRecipeViewModel();
+            return View(calculateMXRecipeViewModel);
         }
 
+        //processes form
         [HttpPost]
         [Route("Recipe/Calculator")]
-        public IActionResult Calculator(MXRecipe newMXRecipe)
+        public IActionResult Calculator(CalculateMXRecipeViewModel calculateMXRecipeViewModel)
         {
+            MXRecipe newMXRecipe = new MXRecipe
+            {
+                Name = calculateMXRecipeViewModel.Name,
+                DyeColor = calculateMXRecipeViewModel.DyeColor
+            };
             RecipeData.Add(newMXRecipe);
             return Redirect("/Recipe");
         }
 
+        [HttpGet]
+        [Route("Recipe/Delete")]
         public IActionResult Delete()
         {
             ViewBag.mxrecipes = RecipeData.GetAll();
@@ -42,6 +55,7 @@ namespace TestToDyeFor.Controllers
         }
 
         [HttpPost]
+        [Route("Recipe/Delete")]
         public IActionResult Delete(int[] recipeIds)
         {
             foreach (int recipeId in recipeIds)
@@ -63,10 +77,10 @@ namespace TestToDyeFor.Controllers
             return View();
         }
 
-        //post: events/edit
+        //processes form
         [HttpPost]
         [Route("/Recipe/Edit")]
-        public IActionResult SubmitEditRecipeForm(int recipeId, string name, string dyeColor)
+        public IActionResult Edit(int recipeId, string name, string dyeColor)
         {
             MXRecipe recipeById = RecipeData.GetById(recipeId);
             recipeById.Name = name;
