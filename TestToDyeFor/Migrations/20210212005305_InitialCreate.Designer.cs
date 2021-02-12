@@ -9,7 +9,7 @@ using TestToDyeFor.Data;
 namespace TestToDyeFor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210211221001_InitialCreate")]
+    [Migration("20210212005305_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
